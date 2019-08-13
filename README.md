@@ -1,8 +1,6 @@
 # Falling Photos
 
-##
-
-Demo: (https://codepen.io/oxideorcoal/pen/vYBLjjq)
+Demo: https://codepen.io/oxideorcoal/pen/vYBLjjq
 
 ## Usage
 
