@@ -18,7 +18,8 @@
 
 ### JavaScript
 
-```import FallingPhotos from "fallingPhotos";
+```
+import FallingPhotos from "fallingPhotos";
 
 new FallingPhotos()
 ```
