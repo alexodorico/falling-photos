@@ -1,18 +1,19 @@
-function FallingPhotos(elements = "#falling-photos") {
-  // Saving height for when lightbox is closed
+function FallingPhoto(child, parent = "#falling-photos") {
+  // Saving height of opened element for when lightbox is closed
   let cacheHeight = 0;
 
   function showLightbox(event) {
-    const element = event.target;
-    const height = pixelsToViewWidth(element);
+    const slicedChild = child.slice(1, child.length);
+    const foundChild = findChild(event.target, slicedChild);
 
-    cacheHeight = pixelsToViewWidth(element);
-    element.classList.add("fallen");
-    element.style.height = 0;
-    element.style.marginTop = height;
+    cacheHeight = pixelsToViewWidth(foundChild);
+    foundChild.classList.add("fallen");
+    foundChild.style.height = cacheHeight;
+    foundChild.style.height = 0;
+    foundChild.style.marginTop = cacheHeight;
 
     document.querySelector("#lightbox").classList.add("appear");
-    document.querySelector("#lightbox img").src = element.src;
+    document.querySelector("#lightbox img").src = foundChild.src;
     document.querySelector("body").classList.add("show");
   }
 
@@ -20,7 +21,7 @@ function FallingPhotos(elements = "#falling-photos") {
     // Prevents error when clicking on lightbox image
     event.stopPropagation();
 
-    const fallenImage = document.querySelector(elements + " .fallen");
+    const fallenImage = document.querySelector(parent + " .fallen");
 
     // Reset styles
     fallenImage.style.marginTop = fallenImage.style.marginBottom;
@@ -47,18 +48,27 @@ function FallingPhotos(elements = "#falling-photos") {
     return decimalArray.join("") + "vw";
   }
 
+  function findChild(target, slicedChild) {
+    if (target.classList.contains(slicedChild)) {
+      return target;
+    } else {
+      return findChild(target.parentElement, slicedChild);
+    }
+  }
+
   // Can't use click here because it will read height as zero
   document
-    .querySelectorAll(elements + " img")
+    .querySelectorAll(parent + " " + child)
     .forEach(image => image.addEventListener("mousedown", showLightbox));
 
   document.querySelectorAll("#lightbox, #lightbox img").forEach(element => {
     element.addEventListener("click", hideLightbox);
   });
 
-  document.querySelectorAll(elements + " img").forEach(element => {
+  document.querySelectorAll(parent + " " + child).forEach(element => {
     element.style.transition = "all 0.33s";
+    element.style.height = pixelsToViewWidth(element);
   });
 }
 
-export default FallingPhotos;
+export default FallingPhoto;
